@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.SeekBar
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -72,12 +73,22 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+        val tvPlayed = findViewById<TextView>(R.id.tvPlayed)
+        val tvRemaining = findViewById<TextView>(R.id.tvRemaining)
         seekBar.max = mediaPlayer!!.duration
         runnable = Runnable {
             seekBar.progress = mediaPlayer!!.currentPosition
+
+            val playedTime = mediaPlayer!!.currentPosition / 1000
+            tvPlayed.text = "$playedTime sec"
+
+            val remainingTime = (mediaPlayer!!.duration - mediaPlayer!!.currentPosition) / 1000
+            tvRemaining.text = "$remainingTime sec"
+
+            // recursively run the runnable every 1 second
             handler.postDelayed(runnable, 1000)
         }
-        handler.postDelayed(runnable, 5000)
+        handler.postDelayed(runnable, 1000)
     }
 }
 
